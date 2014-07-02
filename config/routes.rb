@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root to: 'pictures#index'
 
-  get '/pictures/returnback' => 'pictures#returnback'
+  get 'returnback' => 'pictures#returnback'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

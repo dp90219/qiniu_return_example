@@ -14,16 +14,30 @@ class PicturesController < ApplicationController
 
   # GET /pictures/new
   def new
-    @picture = Picture.new
   end
 
   # GET /pictures/1/edit
   def edit
   end
 
-  # GET /pictures/returnback
+  # GET /returnback
   def returnback
+    data = Qiniu::Utils.safe_json_parse Qiniu::Utils.urlsafe_base64_decode params[:upload_ret]
 
+
+    # render json: data
+
+    @picture = Picture.new
+    @picture.name = data["key"]
+    @picture.width = data["width"]
+    @picture.height = data["height"]
+    @picture.url = Qiniu.download("lptest", data["key"])
+
+    if @picture.save
+      redirect_to @picture
+    else 
+      render json: data
+    end
   end
 
   # POST /pictures
