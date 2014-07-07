@@ -20,6 +20,30 @@ class PicturesController < ApplicationController
   def edit
   end
 
+  # POST callback
+
+  def callback
+    @picture = Picture.new
+    puts "----------------------------------------------------------begin"
+    puts params.keys
+    data = (params.keys.sort {|i| -i.length})[0]
+    data = data[1...-1].split(',').map{|item| item.split(':')}.map{|item| item[0] = item[0].strip[1...-1]; item}.to_h
+    puts "------------------#{data}"
+
+    @picture.key = data["key"]
+    @picture.width =  data["width"]
+    @picture.height =  data["height"]
+    puts "data---------------------#{data.class}"
+    puts @picture.inspect
+    puts "----------------------------------------------------------end"
+    if @picture.save
+      render json: @picture
+    else
+      render json: {success: false}
+    end
+
+  end
+
   # GET /returnback
   def returnback
     data = Qiniu::Utils.safe_json_parse Qiniu::Utils.urlsafe_base64_decode params[:upload_ret]
@@ -28,7 +52,7 @@ class PicturesController < ApplicationController
     # render json: data
 
     @picture = Picture.new
-    @picture.name = data["key"]
+    @picture.key = data["key"]
     @picture.width = data["width"]
     @picture.height = data["height"]
     @picture.url = Qiniu.download("lptest", data["key"])
@@ -73,6 +97,7 @@ class PicturesController < ApplicationController
   # DELETE /pictures/1
   # DELETE /pictures/1.json
   def destroy
+    Qiniu.delete("lptest", @picture.key)
     @picture.destroy
     respond_to do |format|
       format.html { redirect_to pictures_url, notice: 'Picture was successfully destroyed.' }

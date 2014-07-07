@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Key</th>
       <th>Height</th>
       <th>Width</th>
       <th>Url</th>
@@ -15,6 +16,7 @@
     <% @pictures.each do |picture| %>
       <tr>
         <td><%= picture.name %></td>
+        <td><%= picture.key %></td>
         <td><%= picture.height %></td>
         <td><%= picture.width %></td>
         <td><%= picture.url %></td>

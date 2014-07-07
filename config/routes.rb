@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   root to: 'pictures#index'
 
   get 'returnback' => 'pictures#returnback'
+  
+  post 'callback' => 'pictures#callback'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
