@@ -27,17 +27,20 @@ class PicturesController < ApplicationController
     puts "----------------------------------------------------------begin"
     puts params.keys
     data = (params.keys.sort {|i| -i.length})[0]
-    data = data[1...-1].split(',').map{|item| item.split(':')}.map{|item| item[0] = item[0].strip[1...-1]; item}.to_h
+    data = data[1...-1].split(',').map{|item| item.split(':')}.map{|item| item[0] = item[0].strip[1...-1]; item[1].strip!; item}.to_h
     puts "------------------#{data}"
 
     @picture.key = data["key"]
     @picture.width =  data["width"]
     @picture.height =  data["height"]
+    @picture.url = Qiniu.download("lptest", data["key"])
+
     puts "data---------------------#{data.class}"
     puts @picture.inspect
     puts "----------------------------------------------------------end"
     if @picture.save
-      render json: @picture
+      # render json: @picture
+      render json: {file_path: @picture.url}
     else
       render json: {success: false}
     end
