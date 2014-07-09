@@ -20,26 +20,31 @@ class PicturesController < ApplicationController
   def edit
   end
 
+  # POST notify
+  def notify
+    puts 'notify params: --------------------------#{params}'
+    render json: params
+  end
+
   # POST callback
 
   def callback
     @picture = Picture.new
     puts "----------------------------------------------------------begin"
-    puts params.keys
+    puts "params.keys: #{params.keys}"
     data = (params.keys.sort {|i| -i.length})[0]
     data = data[1...-1].split(',').map{|item| item.split(':')}.map{|item| item[0] = item[0].strip[1...-1]; item[1].strip!; item}.to_h
-    puts "------------------#{data}"
+    puts "data: #{data}"
 
     @picture.key = data["key"]
     @picture.width =  data["width"]
     @picture.height =  data["height"]
     @picture.url = Qiniu.download("lptest", data["key"])
 
-    puts "data---------------------#{data.class}"
+    puts "data.class: #{data.class}"
     puts @picture.inspect
     puts "----------------------------------------------------------end"
     if @picture.save
-      # render json: @picture
       render json: {file_path: @picture.url}
     else
       render json: {success: false}
