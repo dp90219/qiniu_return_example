@@ -1,0 +1,11 @@
+<h1>New video</h1>
+
+
+<form action="http://up.qiniu.com" method="post" enctype="multipart/form-data">
+  <input name="key" type="hidden" value=<%= "#{key}" %>>
+  <input name="token" type="hidden" value=<%= "#{uptoken}" %>>
+  <input name="file" type="file">
+  <input name="submit" type="submit">
+</form>
+
+<%= link_to 'Back', videos_path %>

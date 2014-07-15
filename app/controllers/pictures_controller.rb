@@ -22,7 +22,7 @@ class PicturesController < ApplicationController
 
   # POST notify
   def notify
-    puts 'notify params: --------------------------#{params}'
+    puts "notify params: --------------------------#{params}"
     render json: params
   end
 

@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  resources :videos
+
+  post 'videos/callback' => 'videos#callback'
+
+  post  'videos/notify' => 'videos#notify'
+
   resources :pictures
 
   root to: 'pictures#index'
